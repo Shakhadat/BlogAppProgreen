@@ -8,6 +8,7 @@ import {
 } from './constants/actionTypes';
 
 const promiseMiddleware = store => next => action => {
+
   if (isPromise(action.payload)) {
     store.dispatch({ type: ASYNC_START, subtype: action.type });
 
@@ -20,7 +21,6 @@ const promiseMiddleware = store => next => action => {
         if (!skipTracking && currentState.viewChangeCounter !== currentView) {
           return
         }
-        console.log('RESULT', res);
         action.payload = res;
         store.dispatch({ type: ASYNC_END, promise: action.payload });
         store.dispatch(action);
@@ -56,7 +56,6 @@ const localStorageMiddleware = store => next => action => {
     window.localStorage.setItem('jwt', '');
     agent.setToken(null);
   }
-
   next(action);
 };
 

@@ -1,14 +1,13 @@
 import React from 'react';
 import agent from '../agent';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { SET_PAGE } from '../constants/actionTypes';
 
-const mapDispatchToProps = dispatch => ({
-  onSetPage: (page, payload) =>
-    dispatch({ type: SET_PAGE, page, payload })
-});
 
 const ListPagination = props => {
+
+  const dispatch = useDispatch();
+
   if (props.articlesCount <= 10) {
     return null;
   }
@@ -19,10 +18,12 @@ const ListPagination = props => {
   }
 
   const setPage = page => {
-    if(props.pager) {
-      props.onSetPage(page, props.pager(page));
-    }else {
-      props.onSetPage(page, agent.Articles.all(page))
+    if (props.pager) {
+      // props.onSetPage(page, props.pager(page));
+      dispatch({ type: SET_PAGE, page, payload: props.pager(page) })
+    } else {
+      // props.onSetPage(page, agent.Articles.all(page))
+      dispatch({ type: SET_PAGE, page, payload: agent.Articles.all(page) })
     }
   };
 
@@ -39,7 +40,7 @@ const ListPagination = props => {
             };
             return (
               <li
-                className={ isCurrent ? 'page-item active' : 'page-item' }
+                className={isCurrent ? 'page-item active' : 'page-item'}
                 onClick={onClick}
                 key={v.toString()}>
 
@@ -55,4 +56,4 @@ const ListPagination = props => {
   );
 };
 
-export default connect(() => ({}), mapDispatchToProps)(ListPagination);
+export default ListPagination;
