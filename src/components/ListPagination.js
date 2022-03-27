@@ -54,6 +54,7 @@ const ListPagination = props => {
       </ul>
     </nav>
   );
+  
 };
 
 export default ListPagination;
